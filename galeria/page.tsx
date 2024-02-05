@@ -2,9 +2,12 @@
 import { Template } from '../../components/Template'
 import { ImageCard } from '../../components/ImageCard'
 import { useState } from 'react'
+import { useNotification } from '@/components'
 import { useImageService } from '@/resources/image/image.service' 
 import { Image } from '@/resources/image/image.resource'
+import { Button } from '@/components/button'
 import Link from 'next/link'
+import { InputText } from '@/components/input'
 
 export default function GaleriaPage(){
   
@@ -13,12 +16,17 @@ export default function GaleriaPage(){
     const [query, setQuery] = useState<string>("")
     const [extension, setExtension] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
+    const notification  = useNotification();
 
     async function searchImages(){
       setLoading(true)
        const result = await useService.buscar(query, extension);
        setImages(result);
        setLoading(false)
+
+       if(!result.length){
+          notification.notify('No results found!', 'warning')
+       }
     }
     function renderImageCard(image: Image){
       return(
@@ -40,20 +48,20 @@ export default function GaleriaPage(){
          <section className='flex flex-col items-center justfy-center my-5'>
                 
                 <div className='flex space-x-4'>
-                     <input type="text" 
-                             onChange={event => setQuery(event.target.value)} 
-                             className='border px-5 py-2 rounded-lg text-gray-900'/>
+                    
+                    <InputText placeholder='Type name or tags' onChange={event => setQuery(event.target.value)} />
                       <select onChange={event => setExtension(event.target.value)} className='border px-4 py-2 rounded-lg text-gray-900'>
                           <option value="">All formats</option>
                           <option value="PNG">PNG</option>
                           <option value="JPEG">JPEG</option>
                           <option value="GIF">GIF</option>
                       </select>
-                     <button className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-300' onClick={searchImages}>Search</button>
-                     
+
+                      <Button type='button' style='bg-red-500 hover:bg-blue-300' label='Search' onClick={searchImages}/>
+                    
                      <Link href="/formulario">
                      
-                         <button className='bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-300'>Add new</button>
+                         <Button type='button' style='bg-yellow-500 hover:bg-yellow-300' label='Add new'/>
 
                      </Link>
                 </div>
