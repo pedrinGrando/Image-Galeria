@@ -57,7 +57,6 @@ export default function Login(){
                             <div className='mt-2'>
                                 <InputText style='w-full'                                        
                                         id='passwordMatch'/>
-                               
                             </div>
                         </RenderIf>
 
