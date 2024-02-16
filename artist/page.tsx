@@ -9,7 +9,7 @@ import { Button } from '@/components/button'
 import Link from 'next/link'
 import { InputText } from '@/components/input'
 
-export default function GaleriaPage(){
+export default function ArtistPage(){
   
     const useService = useImageService();
     const [images, setImages] = useState<Image[]>([])
@@ -46,20 +46,16 @@ export default function GaleriaPage(){
      <Template loading={loading}>
 
          <section className='flex flex-col items-center justfy-center my-5'>
-                
+  
                 <div className='flex space-x-4'>
+
+                <h1 className='flex space-x-4 text-gray-700'>Artist Menu</h1>
                     
-                    <InputText placeholder='Type name or tags' onChange={event => setQuery(event.target.value)} />
-                      <select onChange={event => setExtension(event.target.value)} className='border px-4 py-2 rounded-lg text-gray-900'>
-                          <option value="">All formats</option>
-                          <option value="PNG">PNG</option>
-                          <option value="JPEG">JPEG</option>
-                          <option value="GIF">GIF</option>
-                      </select>
+                    <InputText placeholder='Type name' onChange={event => setQuery(event.target.value)} />
 
                       <Button type='button' style='bg-red-500 hover:bg-blue-300' label='Search' onClick={searchImages}/>
                     
-                     <Link href="/formulario">
+                     <Link href="/artistForm">
                      
                          <Button type='button' style='bg-yellow-500 hover:bg-yellow-300' label='Add new'/>
 
