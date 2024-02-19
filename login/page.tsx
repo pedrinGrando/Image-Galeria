@@ -3,13 +3,19 @@
 import { Template, RenderIf, InputText, Button, FieldError, useNotification } from '@/components'
 import { useState } from 'react'
 import { useFormik } from 'formik'
+import { LoginForm, formScheme, validationScheme } from './formScheme'
+import { useAuth } from '@/resources' 
 import { useRouter } from 'next/navigation'
-import { LoginForm, formScheme, validationScheme } from './formScheme' 
+import { Credentials } from '@/resources/user/Users.resources'
 
 export default function Login(){
 
     const [loading, setLoading] = useState<boolean>(false);
     const [newUserState, setNewUserState] = useState<boolean>(false);
+
+    const auth = useAuth();
+    const notification = useNotification();
+    const router = useRouter();
 
     const { values, handleChange, handleSubmit, errors} = useFormik<LoginForm>({
         initialValues: formScheme,
@@ -18,7 +24,16 @@ export default function Login(){
        }) 
 
        async function onSubmit(values: LoginForm){
-         console.log(values)
+          if(!newUserState){
+            const credentials: Credentials = { email: values.email, password: values.password}
+            router.push("/galeria")
+            try{
+                const acessToken = await auth.authenticate(credentials)
+            }catch(error : any){
+                 const message = error?.message;
+                 notification.notify(message, error)
+            }
+          }
        }
 
     return (
@@ -56,6 +71,7 @@ export default function Login(){
                                         value={values.email}/>
 
                                        <FieldError error={errors.email}/>
+                           
                         </div>
 
                         <div>
