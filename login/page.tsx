@@ -71,7 +71,6 @@ export default function Login(){
                                         value={values.email}/>
 
                                        <FieldError error={errors.email}/>
-                           
                         </div>
 
                         <div>
